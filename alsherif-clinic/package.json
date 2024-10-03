@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://abdallasharaf.github.io/doctor-template/",
+  "homepage": "https://abdallasharaf.github.io/doctor-template/alsherif-clinic",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
