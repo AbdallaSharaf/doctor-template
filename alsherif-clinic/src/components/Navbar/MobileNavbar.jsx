@@ -24,8 +24,9 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
     };
 
     return (
-        <>
-            <nav className="fixed bottom-0 block md:hidden left-0 w-full max-h-20 border-t border-opacity-20 border-gray-700 bg-white z-20">
+        <>  
+            <div className='fixed flex justify-center bottom-[75px] w-full'><button className='w-[90%] rounded-md bg-primary py-2'><Link to='/book' className='text-white'>احجز الآن</Link></button></div>
+            <nav className="fixed bottom-0 block lg:hidden left-0 w-full max-h-20 border-t border-opacity-20 border-gray-700 bg-white z-20">
                 <div className="flex relative justify-around py-4">
                     {mobileItems.map((item, id) => (
                         <Link
@@ -60,14 +61,14 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
                 >
                     <div className="flex flex-col py-8 gap-6 items-center h-full relative">
                         {navigation.map((item, index) => (
-                            <div key={`menu-item-${index}`} className={`px-3 text-end transition-all duration-300 ease-in-out w-full`}>
+                            <div key={`menu-item-${index}`} className={`px-3 text-sm md:text-2xl text-end transition-all duration-300 ease-in-out w-full`}>
                                 <Link
                                     to={item.to}
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         handleDropdownToggle(item.name); // Toggle dropdown
                                     }}
-                                    className={`flex items-center  text-end justify-end transition-all duration-300 ease-in-out ${openDropdown === item.name ? 'text-primary' : 'text-secondary'}`}
+                                    className={`flex items-center text-end justify-end transition-all duration-300 ease-in-out ${openDropdown === item.name ? 'text-primary mb-3 md:mb-5' : 'text-secondary'}`}
                                 >
                                     <FontAwesomeIcon
                                         icon={faChevronDown}
@@ -79,7 +80,7 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
                                 
                                 {item.dropdown && (
                                 <div
-                                    className={`flex flex-col w-full gap-3 bg-opacity-55 bg-gray-100 transition-all duration-300 ease-in-out ${openDropdown === item.name ? 'h-full opacity-100 py-4 -mb-2' : 'h-0 opacity-0 overflow-hidden'}`}
+                                    className={`flex flex-col w-full gap-2 bg-opacity-55  bg-gray-100 ${openDropdown === item.name ? 'h-fit opacity-100 -mb-2 md:mb-0 md:my-2' : 'h-0 opacity-0 overflow-hidden'}`}
                                 >
                                     {item.dropdown.map((subItem) => (
                                         <Link
@@ -89,7 +90,7 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
                                                 setIsMenuOpen(false);
                                                 setOpenDropdown(null); // Close dropdown when a sub-item is clicked
                                             }}
-                                            className="text-sm text-secondary w-full px-5"
+                                            className="md:text-xl text-secondary w-full px-5"
                                         >
                                             {subItem.name}
                                         </Link>
@@ -99,9 +100,9 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
                             </div>
                         ))}
                         <div className='flex justify-around px-4 gap-5 absolute bottom-6'>
-                            <Link to='https://web.facebook.com/ahmedalshriefdentalclinics'><FontAwesomeIcon icon={faFacebook} className='text-secondary'/></Link>
-                            <Link to='https://bootstrapmade.com/content/demo/DevFolio/portfolio-details.html'><FontAwesomeIcon icon={faInstagram} className='text-secondary'/></Link>
-                            <Link to='https://bootstrapmade.com/content/demo/DevFolio/portfolio-details.html'><FontAwesomeIcon icon={faTiktok} className='text-secondary'/></Link>
+                            <Link to='https://web.facebook.com/ahmedalshriefdentalclinics'><FontAwesomeIcon icon={faFacebook} className='text-secondary md:text-xl'/></Link>
+                            <Link to='https://bootstrapmade.com/content/demo/DevFolio/portfolio-details.html'><FontAwesomeIcon icon={faInstagram} className='text-secondary md:text-xl'/></Link>
+                            <Link to='https://bootstrapmade.com/content/demo/DevFolio/portfolio-details.html'><FontAwesomeIcon icon={faTiktok} className='text-secondary md:text-xl'/></Link>
                         </div>
                     </div>
                 </div>

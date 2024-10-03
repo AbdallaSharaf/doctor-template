@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import Navbar from './components/Navbar/Navbar'
+import Hero from './components/Hero/Hero'
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
     transition={{duration:1 , delay:0.25}}
     >
         <Navbar />
+        <Hero />
     </motion.div>
     )
 }
