@@ -11,7 +11,8 @@ export default {
         'secondary': '#0d3c85'
       },
       fontFamily: {
-        sans: ['Rubik', 'sans-serif'],  // Replace the default sans with 'Rubik'
+        sans: ['Rubik', 'sans-serif'],
+        serif: ['Montserrat', 'sans-serif']
       },
     },
   },

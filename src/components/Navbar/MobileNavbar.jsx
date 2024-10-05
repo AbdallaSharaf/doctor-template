@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faInstagram, faTiktok, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
 
 export default function MobileNavbar({ navigation, handleLinkClick }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,7 +25,7 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
 
     return (
         <>  
-            <div className='fixed flex justify-center bottom-[75px] w-full'><button className='w-[90%] rounded-md bg-primary py-2'><Link to='/book' className='text-white'>احجز الآن</Link></button></div>
+            <div className='fixed flex z-50 justify-center bottom-[75px] w-full'><button className='w-[90%] max-w-[380px] rounded-md bg-primary py-2'><Link to='/book' className='text-white'>احجز الآن</Link></button></div>
             <nav className="fixed bottom-0 block lg:hidden left-0 w-full max-h-20 border-t border-opacity-20 border-gray-700 bg-white z-20">
                 <div className="flex relative justify-around py-4">
                     {mobileItems.map((item, id) => (

@@ -2,6 +2,9 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import Navbar from './components/Navbar/Navbar'
 import Hero from './components/Hero/Hero'
+import About from './components/About/About'
+import Services from './components/Services/Services'
+import Gallery from './components/Gallery/Gallery'
 
 const App = () => {
   return (
@@ -13,6 +16,9 @@ const App = () => {
     >
         <Navbar />
         <Hero />
+        <About />
+        <Services />
+        <Gallery />
     </motion.div>
     )
 }

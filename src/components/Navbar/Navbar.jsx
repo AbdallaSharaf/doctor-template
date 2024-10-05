@@ -14,7 +14,7 @@ export default function Navbar() {
             { name: 'الحشوات التجميلية', to: '/services/consulting' },
             { name: 'تنظيف الأسنان', to: '/services/consulting' },
         ] },
-        { name: 'تجارب عملائنا', to: '/projects', current: false },
+        { name: 'تجارب عملائنا', to: '/#gallery', current: false },
         { name: 'عن المركز', to: '/about', current: false},
         { name: 'العنوان', to: '/#map', current: false, icon: faMapLocationDot },
         { name: 'تواصل معانا', to: '/#contact', current: false },
