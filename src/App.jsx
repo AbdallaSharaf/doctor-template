@@ -5,6 +5,9 @@ import Hero from './components/Hero/Hero'
 import About from './components/About/About'
 import Services from './components/Services/Services'
 import Gallery from './components/Gallery/Gallery'
+import Team from './components/Team/Team'
+import Contact from './components/Contact/Contact'
+import MapComponent from './components/Map/Map'
 
 const App = () => {
   return (
@@ -19,6 +22,9 @@ const App = () => {
         <About />
         <Services />
         <Gallery />
+        <Team />
+        <Contact />
+        <MapComponent />
     </motion.div>
     )
 }
