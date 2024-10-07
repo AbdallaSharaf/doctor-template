@@ -20,9 +20,23 @@ const Services = () => {
         arrows: false,
         speed: 500,
         infinite: true,
-        slidesToShow: 3,
-        rtl: true,
+        slidesToShow: 5,
         swipeToSlide: true,
+        responsive: [
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 5,
+                
+              }
+            },
+            {
+              breakpoint: 768,
+              settings: {
+                slidesToShow: 3,
+              }
+            },
+          ]       
     };
 
   return (
@@ -36,11 +50,12 @@ const Services = () => {
           {servicesArray.map((item, id) => {
               return (
                   <div key={id} className="text-end px-4 cursor-pointer outline-none">
-                      <Link to={item.to}>
-                          <div className='bg-white rounded-md shadow-md text-5xl flex flex-col items-end pt-5 gap-4 px-4 h-[150px]'>
+                      <Link to={`/services/${item.name}`}>
+                          <div className='mobileM:min-w-[150px] bg-white rounded-md shadow-md  flex flex-col items-end pt-5 px-4 h-[150px]'>
                               {/* Apply dynamic color to the FontAwesomeIcon */}
-                                <FontAwesomeIcon className='' icon={item.icon} color={item.color} />
-                              <h1 className='text-sm font-semibold mt-2'>{item.name}</h1>
+                                <FontAwesomeIcon className='text-5xl' icon={item.icon} color={item.color} />
+                              <h1 className='text-sm font-semibold mobileM:text-nowrap my-2'>{item.name}</h1>
+                              <h2 className='text-sm font-light'>كلمة تانية</h2>
                           </div>
                       </Link>
                   </div>

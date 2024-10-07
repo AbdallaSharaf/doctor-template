@@ -19,6 +19,16 @@ export default {
         sans: ['Rubik', 'sans-serif'],
         serif: ['Montserrat', 'sans-serif']
       },
+      screens: {
+        'mobileS': '320px',
+        // => @media (min-width: 640px) { ... }
+  
+        'mobileM': '375px',
+        // => @media (min-width: 1024px) { ... }
+  
+        'mobileL': '425px',
+        // => @media (min-width: 1280px) { ... }
+      },
     },
   },
   plugins: [],

@@ -9,18 +9,18 @@ const Contact = () => {
     const formik = useFormik({
         initialValues: {
           name: '',
-          email: '',
+          phone: '',
           subject: '',
           message: '',
         },
         validationSchema: Yup.object({
           name: Yup.string()
-            .matches(/^[\u0600-\u06FF\s]+$/, 'الاسم يجب أن يحتوي على حروف عربية فقط')
+            .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, 'الاسم يجب أن يحتوي على حروف عربية أو إنجليزية فقط')
             .min(3, 'الاسم يجب أن يكون على الأقل ٣ أحرف')
             .required('الاسم مطلوب'),
-          email: Yup.string()
-            .email('صيغة البريد الإلكتروني غير صحيحة')
-            .required('البريد الإلكتروني مطلوب'),
+          phone: Yup.string()
+            .matches(/^\+?[0-9]{10,15}$/, 'رقم الهاتف غير صحيح')
+            .required('رقم الهاتف مطلوب'),
           subject: Yup.string()
             .required('العنوان مطلوب'),
           message: Yup.string()
@@ -36,11 +36,23 @@ const Contact = () => {
         },
       });
 
+  // Google Maps and WhatsApp links
+  const openGoogleMaps = () => {
+    window.open('https://goo.gl/maps/your-location', '_blank');
+  };
+
+  const sendWhatsApp = () => {
+    window.open('https://wa.me/201101161961', '_blank');
+  };
+
   return (
     <div id="contact" className="mt-16 w-[90%] mx-auto text-end">
         <h1 className='text-2xl font-bold'>تواصل معانا</h1>   
         <h1 className='my-4 font-semibold'>احصل على إجابات ونصائح من المستشارين المحترفين</h1>
-          <div className='flex items-center justify-end group py-3 border-b-[1px] border-gray-500 border-opacity-10 gap-4'>
+          <div 
+            onClick={openGoogleMaps} 
+            className='cursor-pointer flex items-center justify-end group py-3 border-b-[1px] border-gray-500 border-opacity-10 gap-4'
+          >
             <div>
               <h1 className='font-semibold py-1'>العنوان</h1>
               <p className='text-sm'>شارع البحر مبنى طنطا تاون مول الدور الخامس</p>
@@ -50,7 +62,10 @@ const Contact = () => {
               className='text-primary size-8'
             />
           </div>
-          <div className='flex items-center justify-end group py-3 border-b-[1px] border-gray-500 border-opacity-10 gap-4'>
+          <div 
+            onClick={sendWhatsApp} 
+            className='cursor-pointer flex items-center justify-end group py-3 border-b-[1px] border-gray-500 border-opacity-10 gap-4'
+          >
             <div>
               <h1 className='font-semibold py-1'>كلمنا</h1>
               <p className='text-sm'>+20 110 1161961</p>
@@ -86,12 +101,12 @@ const Contact = () => {
               <div className='mb-4 w-full'>
                 <input
                   className='mb-1 px-5 py-3 text-black w-full border-[1px] text-end border-gray-200 focus:border-gray-400 focus:outline-none'
-                  {...formik.getFieldProps('email')}
-                  type="email"
-                  placeholder="ميل"
+                  {...formik.getFieldProps('phone')}
+                  type="text"
+                  placeholder="رقم الهاتف"
                 />
-                {formik.touched.email && formik.errors.email ? (
-                  <p className='text-red-800 w-full'>{formik.errors.email}</p>
+                {formik.touched.phone && formik.errors.phone ? (
+                  <p className='text-red-800 w-full'>{formik.errors.phone}</p>
                 ) : null}
               </div>
             <div className='mb-4 w-full'>
@@ -99,7 +114,7 @@ const Contact = () => {
                 className='mb-1 px-5 py-3 w-full border-[1px] text-end text-black border-gray-200 focus:border-gray-400 focus:outline-none'
                 {...formik.getFieldProps('subject')}
                 type="text"
-                placeholder="العنوان"
+                placeholder="عنوان رسالتك"
               />
               {formik.touched.subject && formik.errors.subject ? (
                 <p className='text-red-800 w-full'>{formik.errors.subject}</p>

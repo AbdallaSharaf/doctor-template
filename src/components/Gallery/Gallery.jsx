@@ -14,7 +14,7 @@ const delimiterIconStyles = {
   backgroundSize: 'cover',
   borderRadius: 'none',
   backgroundImage: `url(${iconImage})`,
-  animation: 'pulse 2s infinite',
+  animation: 'pulse 5s infinite',
 };
 
 const images = [];
@@ -26,20 +26,23 @@ Object.keys(allImages).forEach((path) => {
   images.push({ url: imageUrl, name: imageName });
 });
 
+const minifiedImages = images.slice(2)
+
 const Gallery = () => {
   return (
     <div id="gallery" className="mt-16">
       <div className='flex mx-auto items-center justify-between mt-10 w-[90%]'>
-        <Link to='/projects' className='text-primary text-xs font-thin'>عرض الكل</Link>
+        <Link to='/gallery' className='text-primary text-xs font-thin'>عرض الكل</Link>
         <h1 className='text-2xl font-bold'>تجارب عملائنا</h1>
       </div>
 
       {/* Image Grid */}
       <div className="w-[90%] mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5">
-        {images.map((image, index, array) => {
+        {minifiedImages.map((image, index, array) => {
           const nextIndex = (index + 1) % array.length; // Loop to the first image when reaching the last
           return (
-            <div key={index} className="flex flex-col items-center justify-center">
+            <Link key={index} to={`/gallery/${image.name}`}>
+            <div  className="flex flex-col items-center justify-center">
               <ReactBeforeSliderComponent
                 firstImage={{ imageUrl: image.url, alt: image.name }}
                 secondImage={{ imageUrl: array[nextIndex].url, alt: array[nextIndex].name }} // Safely handle next image
@@ -47,7 +50,7 @@ const Gallery = () => {
               />
               <h2 className="my-2">{image.name}</h2>
             </div>
-            
+            </Link>
           )
         })}
       </div>
