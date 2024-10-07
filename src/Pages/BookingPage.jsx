@@ -1,29 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
 
 // Define available time slots based on the selected date
 const getAvailableTimes = (date) => {
     const day = date.getDay(); // Get the current day (0 = Sunday, 6 = Saturday)
 
     // Disable time selection for Fridays (5) and Saturdays (6)
-    if (day === 5 || day === 6) {
+    if (day === 5 ) {
         return []; // No available times
     }
 
     return [
-        '09:00 AM',
-        '10:00 AM',
-        '11:00 AM',
-        '01:00 PM',
-        '02:00 PM',
-        '03:00 PM',
-        '04:00 PM',
+        '09:00 ص',
+        '10:00 ص',
+        '11:00 ص',
+        '01:00 م',
+        '02:00 م',
+        '03:00 م',
+        '04:00 م',
+        '05:00 م',
+        '06:00 م',
+        '07:00 م',
+        '08:00 م',
     ];
+};
+
+// Generate dates for the next week excluding Fridays
+const getNextWeekDates = () => {
+    const dates = [];
+    const today = new Date();
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() + 2);
+    
+    for (let i = 0; i < 8; i++) {
+        const nextDate = new Date(startDate);
+        nextDate.setDate(startDate.getDate() + i);
+
+        if (nextDate.getDay() !== 5) { // Exclude Fridays
+            dates.push(nextDate);
+        }
+    }
+    return dates;
 };
 
 // Form validation schema
@@ -46,17 +68,18 @@ const validationSchema = Yup.object({
 });
 
 const BookingPage = () => {
-    const [date, setDate] = useState(new Date());
     const [availableTimes, setAvailableTimes] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const navigate = useNavigate();
+    const dates = getNextWeekDates(); // Get next week dates
 
     useEffect(() => {
-        const times = getAvailableTimes(date);
+        const times = getAvailableTimes(selectedDate);
         setAvailableTimes(times);
         setSelectedTime(''); // Reset selected time when date changes
-    }, [date]);
+    }, [selectedDate]);
 
     const formik = useFormik({
         initialValues: {
@@ -70,9 +93,9 @@ const BookingPage = () => {
         onSubmit: (values) => {
             Swal.fire({
                 title: 'تم الحجز بنجاح!',
-    html: `<pre>اسم: ${values.name}<br>رقم الهاتف: ${values.phone}<br>العمر: ${values.age}<br>الجنس: ${values.gender === 'male' ? 'ذكر' : 'أنثى'}<br>المشكلة: ${values.problem}<br>التاريخ: ${date.toLocaleDateString()}<br>الوقت: ${selectedTime}</pre>`,
-    icon: 'success',
-    confirmButtonText: 'موافق',
+                html: `<pre>اسم: ${values.name}<br>رقم الهاتف: ${values.phone}<br>العمر: ${values.age}<br>الجنس: ${values.gender === 'male' ? 'ذكر' : 'أنثى'}<br>المشكلة: ${values.problem}<br>التاريخ: ${selectedDate.toLocaleDateString()}<br>الوقت: ${selectedTime}</pre>`,
+                icon: 'success',
+                confirmButtonText: 'موافق',
             }).then(() => {
                 navigate('/'); // Redirect to homepage after confirmation
             });
@@ -81,48 +104,56 @@ const BookingPage = () => {
     });
 
     return (
-        <div className="max-w-lg mx-auto mt-10 p-5 border text-right rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-5">حجز موعد</h2>
+        <div className="max-w-lg mx-auto mt-10 p-5  text-right rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-8">احجز معادك</h2>
 
-            <Calendar
-                className="mx-auto w-full"
-                onChange={setDate}
-                value={date}
-                minDate={new Date()} 
-                locale="ar"
-                tileDisabled={({ date }) => {
-                    const day = date.getDay();
-                    return day === 5 || day === 6 || date < new Date(); // Disable Fridays and Saturdays
-                }}
-            />
+            <div className="overflow-x-auto  flex gap-4 pb-3 direction-rtl">
+                {dates.map((date, index) => (
+                    <div
+                        key={index}
+                        className={`border rounded-lg py-4 transition-all duration-300 ease-in-out px-4 cursor-pointer text-center flex flex-col items-center justify-center ${
+                            selectedDate.toDateString() === date.toDateString()
+                                ? 'bg-primary text-white'
+                                : 'bg-gray-200'
+                        }`}
+                        onClick={() => setSelectedDate(date)}
+                    >   
+                        <h1 className='w-[60px] font-semibold text-xl'>{date.getDate()}</h1>
+                        <p className='text-sm mt-2 text-black text-opacity-75'>{date.toLocaleDateString('ar-EG', { weekday: 'long'})}</p>
+                    </div>
+                ))}
+            </div>
 
-            <div className="mt-5">
-                <div className="grid grid-cols-2 gap-3 mt-2">
+            <div className="mt-12">
+                <h1 className='text-xl font-semibold mb-8'>المواعيد المتاحة</h1>
+                <div className="grid grid-cols-3 gap-3 mt-2 direction-rtl">
                     {availableTimes.length === 0 ? (
                         <div className="col-span-2 text-red-600">لا توجد أوقات متاحة لهذا اليوم</div>
                     ) : (
                         availableTimes.map((time, index) => (
                             <div
                                 key={index}
-                                className={`p-3 border rounded-lg text-center cursor-pointer ${
+                                className={`p-3 flex items-center justify-around  border text-sm rounded-lg text-center cursor-pointer transition-all duration-300 ease-in-out ${
                                     selectedTime === time ? 'bg-primary text-white' : 'bg-gray-200'
                                 }`}
                                 onClick={() => setSelectedTime(time)}
                             >
-                                {time}
+                                <FontAwesomeIcon className='font-semibold' icon={faClock} />
+                                <div className='font-light w-3/4'>{time}</div>
                             </div>
                         ))
                     )}
                 </div>
             </div>
 
-            <form onSubmit={formik.handleSubmit} className="mt-5 mb-20">
+            <form onSubmit={formik.handleSubmit} className="mt-12 mb-16">
+                <h1 className='text-xl font-semibold mb-8'>سجل بياناتك</h1>
                 <div>
                     <input
                         type="text"
                         id="name"
                         name="name"
-                        className="border rounded p-2 w-full text-right"
+                        className="border rounded px-2 py-3 w-full text-right"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.name}
@@ -133,12 +164,12 @@ const BookingPage = () => {
                     ) : null}
                 </div>
 
-                <div className="mt-3">
+                <div className="mt-5">
                     <input
                         type="text"
                         id="phone"
                         name="phone"
-                        className="border rounded p-2 w-full text-right"
+                        className="border rounded px-2 py-3 w-full text-right"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.phone}
@@ -149,12 +180,12 @@ const BookingPage = () => {
                     ) : null}
                 </div>
 
-                <div className="mt-3">
+                <div className="mt-5">
                     <input
                         type="number"
                         id="age"
                         name="age"
-                        className="border rounded p-2 w-full text-right"
+                        className="border rounded px-2 py-3 w-full text-right"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.age}
@@ -165,11 +196,11 @@ const BookingPage = () => {
                     ) : null}
                 </div>
 
-                <div className="mt-3">
+                <div className="mt-5">
                     <div className="flex space-x-4 justify-between">
                         <button
                             type="button"
-                            className={`w-full p-2 rounded border ${
+                            className={`w-full px-2 py-3 rounded border ${
                                 formik.values.gender === 'male' ? 'bg-primary text-white' : 'bg-gray-200'
                             }`}
                             onClick={() => formik.setFieldValue('gender', 'male')}
@@ -178,7 +209,7 @@ const BookingPage = () => {
                         </button>
                         <button
                             type="button"
-                            className={`w-full p-2 rounded border ${
+                            className={`w-full px-2 py-3 rounded border ${
                                 formik.values.gender === 'female' ? 'bg-primary text-white' : 'bg-gray-200'
                             }`}
                             onClick={() => formik.setFieldValue('gender', 'female')}
@@ -191,12 +222,11 @@ const BookingPage = () => {
                     ) : null}
                 </div>
 
-
-                <div className="mt-3">
+                <div className="mt-5">
                     <textarea
                         id="problem"
                         name="problem"
-                        className="border rounded p-2 w-full text-right"
+                        className="border rounded px-2 py-3 w-full text-right"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.problem}
@@ -206,14 +236,15 @@ const BookingPage = () => {
                         <div className="text-red-600">{formik.errors.problem}</div>
                     ) : null}
                 </div>
-
+                <div className='w-full flex justify-center'>
                 <button
                     type="submit"
-                    className="bg-primary text-white rounded px-4 py-2 mt-5 w-full disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={!selectedTime || !formik.isValid || !formik.dirty || submitted}
+                    className="bg-primary text-white rounded px-4 py-2 mt-5 w-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={!selectedTime || submitted}
                 >
-                    تأكيد الحجز
+                    حجز الموعد
                 </button>
+                </div>
             </form>
         </div>
     );

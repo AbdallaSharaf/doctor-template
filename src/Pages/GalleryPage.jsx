@@ -11,7 +11,6 @@ const images = Object.keys(allImages).map((path) => ({
 }));
 
 const GalleryPage = () => {
-    console.log(images)
   return (
     <div className="mt-10 mb-20 w-[90%] mx-auto">
       <h1 className='text-2xl text-center font-bold mb-5'>تجارب عملائنا</h1>

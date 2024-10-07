@@ -7,11 +7,11 @@ const MapComponent = () => {
   const googleMapsLink = `https://www.google.com/maps?q=${position[0]},${position[1]}`;
 
   return (
-    <div id="map" className="relative h-[250px] mt-16 mb-32 w-full">
+    <div id="map" className="relative h-[250px] mt-4 w-full">
       <MapContainer 
         center={position} 
         zoom={17} 
-        scrollWheelZoom={true} 
+        // scrollWheelZoom={true} 
         attributionControl={false} // Disable attribution
         style={{ height: "100%", width: "100%", zIndex: 0 }}
       >

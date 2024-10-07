@@ -46,11 +46,10 @@ export default function Navbar() {
     };
 
     useEffect(() => {
-        // Check if the current location is not the home page
         setNavigation((prevNavigation) =>
             prevNavigation.map((navItem) => ({
                 ...navItem,
-                current: navItem.to === '/' ? location.pathname === '/' : navItem.current
+                current: navItem.to === location.pathname // Compare directly with the current pathname
             }))
         );
     }, [location.pathname]); // Run this effect when the pathname changes

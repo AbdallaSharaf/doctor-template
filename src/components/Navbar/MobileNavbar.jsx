@@ -25,14 +25,14 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
 
     return (
         <>  
-            <nav className="fixed bottom-0 block lg:hidden left-0 w-full max-h-20 border-t border-opacity-20 border-gray-700 bg-white z-20">
-                <div className="flex relative justify-around py-4">
+            <nav className="fixed bottom-0 block lg:hidden left-0 w-full h-16 border-t border-opacity-20 border-gray-700 bg-white z-20">
+                <div className="flex h-full items-center relative ">
                     {mobileItems.map((item, id) => (
                         <Link
                             key={id}
                             to={item.to}
                             onClick={() => handleLinkClick(item)}
-                            className={`flex flex-col items-center py-2 text-xl ${item.current ? 'text-primary' : 'text-secondary'} transition-all duration-300 ease-in-out`}
+                            className={`flex w-1/4 h-full flex-col items-center justify-center text-xl ${item.current ? 'bg-primary text-white' : 'text-primary bg-white'} transition-all duration-300 ease-in-out`}
                             aria-current={item.current ? 'page' : undefined}
                         >
                             <FontAwesomeIcon icon={item.icon} />
@@ -41,7 +41,7 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
 
                     <button
                         onClick={toggleMenu}
-                        className={`flex flex-col items-center py-2 text-xl ${isMenuOpen ? 'text-primary' : 'text-secondary'} transition-all duration-300 ease-in-out`}
+                        className={`flex flex-col items-center justify-center py-2 w-1/4 h-full text-xl ${isMenuOpen ?'bg-primary text-white' : 'text-primary bg-white'} transition-all duration-300 ease-in-out`}
                     >
                         <FontAwesomeIcon icon={faBars} />
                     </button>

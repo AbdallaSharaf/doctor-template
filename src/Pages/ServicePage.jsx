@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTooth } from '@fortawesome/free-solid-svg-icons';
 import BookingButton from '../components/BookingButton/BookingButton';
+import image from '../assets/services-dummy.avif'
 
 const servicesDetails = {
     'زراعة الاسنان': {
@@ -53,11 +53,13 @@ const ServicePage = () => {
     }
 
     return (
-        <div className="container mx-auto mt-10 px-4 text-right ">
-                <FontAwesomeIcon icon={service.icon} className="text-7xl mb-4 mx-auto text-center" color={service.color} />
-                <h1 className="text-3xl text-primary font-bold ">{service.title}</h1>
-                <h2 className='text-sm text-black text-opacity-70 mt-2 mb-4'>{service.subtitle}</h2>
-                <p className="">{service.description}</p>
+        <div className="container text-right w-full">
+                <img src={image} alt=""  className='w-full'/>
+                <div className='px-4 mt-10 mx-auto'>
+                    <h1 className="text-3xl text-primary font-bold ">{service.title}</h1>
+                    <h2 className='text-sm text-black text-opacity-70 mt-2 mb-4'>{service.subtitle}</h2>
+                    <p className="">{service.description}</p>
+                </div>
             <div className='w-full flex justify-center mt-10 mb-20'>
                 <BookingButton classes={'w-1/2'} />
             </div>

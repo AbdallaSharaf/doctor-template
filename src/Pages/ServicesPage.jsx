@@ -19,9 +19,9 @@ const ServicesListPage = () => {
         {servicesArray.map((service, id) => (
           <div key={id} className="bg-white shadow-md max-w-[200px] mx-auto rounded-lg p-6 h-[200px]">
             <Link to={service.to} className="flex flex-col items-end">
-              <FontAwesomeIcon icon={service.icon} className="text-4xl mb-4" color={service.color} />
-              <h2 className="text-xl font-bold mb-2">{service.name}</h2>
-              <p className="text-sm text-gray-600">{service.description}</p>
+              <FontAwesomeIcon icon={service.icon} className="text-4xl size-1/3 mb-4" color={service.color} />
+              <h2 className="text-xl font-bold mb-2 size-1/3">{service.name}</h2>
+              <p className="text-sm size-1/3 text-gray-600">{service.description}</p>
             </Link>
           </div>
         ))}

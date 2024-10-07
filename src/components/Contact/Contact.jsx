@@ -2,7 +2,8 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { faLocationDot, faPhone, faEnvelope, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faLocationDot, faEnvelope, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons';
 import Swal from 'sweetalert2';
 
 const Contact = () => {
@@ -64,15 +65,15 @@ const Contact = () => {
           </div>
           <div 
             onClick={sendWhatsApp} 
-            className='cursor-pointer flex items-center justify-end group py-3 border-b-[1px] border-gray-500 border-opacity-10 gap-4'
+            className='cursor-pointer flex items-center justify-end group py-3 border-b-[1px] border-gray-500 border-opacity-10 gap-3'
           >
             <div>
               <h1 className='font-semibold py-1'>كلمنا</h1>
               <p className='text-sm'>+20 110 1161961</p>
             </div>
             <FontAwesomeIcon
-              icon={faPhone}
-              className='text-primary size-8'
+              icon={faWhatsappSquare}
+              className='text-primary size-9'
             />
           </div>
           <div className='flex items-center group py-3 justify-end gap-4'>
