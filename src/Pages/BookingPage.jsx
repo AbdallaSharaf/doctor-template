@@ -4,6 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 // Define available time slots based on the selected date
 const getAvailableTimes = (date) => {
@@ -49,6 +50,7 @@ const BookingPage = () => {
     const [availableTimes, setAvailableTimes] = useState([]);
     const [selectedTime, setSelectedTime] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const times = getAvailableTimes(date);
@@ -68,22 +70,26 @@ const BookingPage = () => {
         onSubmit: (values) => {
             Swal.fire({
                 title: 'تم الحجز بنجاح!',
-                text: `اسم: ${values.name}\nرقم الهاتف: ${values.phone}\nالعمر: ${values.age}\nالجنس: ${values.gender === 'male' ? 'ذكر' : 'أنثى'}\nالمشكلة: ${values.problem}\nالتاريخ: ${date.toLocaleDateString()}\nالوقت: ${selectedTime}`,
-                icon: 'success',
-                confirmButtonText: 'موافق',
+    html: `<pre>اسم: ${values.name}<br>رقم الهاتف: ${values.phone}<br>العمر: ${values.age}<br>الجنس: ${values.gender === 'male' ? 'ذكر' : 'أنثى'}<br>المشكلة: ${values.problem}<br>التاريخ: ${date.toLocaleDateString()}<br>الوقت: ${selectedTime}</pre>`,
+    icon: 'success',
+    confirmButtonText: 'موافق',
+            }).then(() => {
+                navigate('/'); // Redirect to homepage after confirmation
             });
             setSubmitted(true);
         },
     });
 
     return (
-        <div className="max-w-lg mx-auto mt-10 p-5 border rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-5 text-center">حجز موعد</h2>
+        <div className="max-w-lg mx-auto mt-10 p-5 border text-right rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-5">حجز موعد</h2>
 
             <Calendar
+                className="mx-auto w-full"
                 onChange={setDate}
                 value={date}
-                minDate={new Date()} // Disable past dates
+                minDate={new Date()} 
+                locale="ar"
                 tileDisabled={({ date }) => {
                     const day = date.getDay();
                     return day === 5 || day === 6 || date < new Date(); // Disable Fridays and Saturdays
@@ -91,35 +97,36 @@ const BookingPage = () => {
             />
 
             <div className="mt-5">
-                <h3 className="text-lg font-semibold">اختر الوقت المتاح:</h3>
-                <select
-                    className="border rounded p-2 w-full mt-2"
-                    value={selectedTime}
-                    onChange={(e) => setSelectedTime(e.target.value)}
-                    disabled={availableTimes.length === 0}
-                >
-                    <option value="">اختر الوقت</option>
-                    {availableTimes.map((time, index) => (
-                        <option key={index} value={time}>
-                            {time}
-                        </option>
-                    ))}
-                </select>
+                <div className="grid grid-cols-2 gap-3 mt-2">
+                    {availableTimes.length === 0 ? (
+                        <div className="col-span-2 text-red-600">لا توجد أوقات متاحة لهذا اليوم</div>
+                    ) : (
+                        availableTimes.map((time, index) => (
+                            <div
+                                key={index}
+                                className={`p-3 border rounded-lg text-center cursor-pointer ${
+                                    selectedTime === time ? 'bg-primary text-white' : 'bg-gray-200'
+                                }`}
+                                onClick={() => setSelectedTime(time)}
+                            >
+                                {time}
+                            </div>
+                        ))
+                    )}
+                </div>
             </div>
 
-            <form onSubmit={formik.handleSubmit} className="mt-5">
+            <form onSubmit={formik.handleSubmit} className="mt-5 mb-20">
                 <div>
-                    <label htmlFor="name" className="block mb-1">
-                        الاسم:
-                    </label>
                     <input
                         type="text"
                         id="name"
                         name="name"
-                        className="border rounded p-2 w-full"
+                        className="border rounded p-2 w-full text-right"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.name}
+                        placeholder='الاسم ثلاثي'
                     />
                     {formik.touched.name && formik.errors.name ? (
                         <div className="text-red-600">{formik.errors.name}</div>
@@ -127,17 +134,15 @@ const BookingPage = () => {
                 </div>
 
                 <div className="mt-3">
-                    <label htmlFor="phone" className="block mb-1">
-                        رقم الهاتف:
-                    </label>
                     <input
                         type="text"
                         id="phone"
                         name="phone"
-                        className="border rounded p-2 w-full"
+                        className="border rounded p-2 w-full text-right"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.phone}
+                        placeholder='رقم التليفون'
                     />
                     {formik.touched.phone && formik.errors.phone ? (
                         <div className="text-red-600">{formik.errors.phone}</div>
@@ -145,17 +150,15 @@ const BookingPage = () => {
                 </div>
 
                 <div className="mt-3">
-                    <label htmlFor="age" className="block mb-1">
-                        العمر:
-                    </label>
                     <input
                         type="number"
                         id="age"
                         name="age"
-                        className="border rounded p-2 w-full"
+                        className="border rounded p-2 w-full text-right"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.age}
+                        placeholder='السن'
                     />
                     {formik.touched.age && formik.errors.age ? (
                         <div className="text-red-600">{formik.errors.age}</div>
@@ -163,37 +166,41 @@ const BookingPage = () => {
                 </div>
 
                 <div className="mt-3">
-                    <label htmlFor="gender" className="block mb-1">
-                        الجنس:
-                    </label>
-                    <select
-                        id="gender"
-                        name="gender"
-                        className="border rounded p-2 w-full"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.gender}
-                    >
-                        <option value="">اختر الجنس</option>
-                        <option value="male">ذكر</option>
-                        <option value="female">أنثى</option>
-                    </select>
+                    <div className="flex space-x-4 justify-between">
+                        <button
+                            type="button"
+                            className={`w-full p-2 rounded border ${
+                                formik.values.gender === 'male' ? 'bg-primary text-white' : 'bg-gray-200'
+                            }`}
+                            onClick={() => formik.setFieldValue('gender', 'male')}
+                        >
+                            ذكر
+                        </button>
+                        <button
+                            type="button"
+                            className={`w-full p-2 rounded border ${
+                                formik.values.gender === 'female' ? 'bg-primary text-white' : 'bg-gray-200'
+                            }`}
+                            onClick={() => formik.setFieldValue('gender', 'female')}
+                        >
+                            أنثى
+                        </button>
+                    </div>
                     {formik.touched.gender && formik.errors.gender ? (
                         <div className="text-red-600">{formik.errors.gender}</div>
                     ) : null}
                 </div>
 
+
                 <div className="mt-3">
-                    <label htmlFor="problem" className="block mb-1">
-                        الوصف:
-                    </label>
                     <textarea
                         id="problem"
                         name="problem"
-                        className="border rounded p-2 w-full"
+                        className="border rounded p-2 w-full text-right"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.problem}
+                        placeholder='مشكلتك'
                     />
                     {formik.touched.problem && formik.errors.problem ? (
                         <div className="text-red-600">{formik.errors.problem}</div>
@@ -202,8 +209,8 @@ const BookingPage = () => {
 
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white rounded px-4 py-2 mt-5 w-full"
-                    disabled={!selectedTime || submitted}
+                    className="bg-primary text-white rounded px-4 py-2 mt-5 w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={!selectedTime || !formik.isValid || !formik.dirty || submitted}
                 >
                     تأكيد الحجز
                 </button>

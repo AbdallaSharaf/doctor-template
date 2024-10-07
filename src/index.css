@@ -19,3 +19,14 @@
 .direction-rtl{
   direction: rtl;
 }
+
+.react-calendar__tile--active {
+  background-color: #407fd5; /* Tailwind 'blue-500' */
+  color: white;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background-color: #407fd5; /* Tailwind 'blue-600' */
+  color: white;
+}
