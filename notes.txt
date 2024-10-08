@@ -1,6 +1,6 @@
-footer
+//footer
 team slider
 about page cancellation
 Header
-map icon in navbar
-location page
+//map icon in navbar
+//location page

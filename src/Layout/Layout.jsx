@@ -2,6 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import React from 'react';
 import Navbar from "../components/Navbar/Navbar";
 import { AnimatePresence, motion } from "framer-motion";
+import Header from "../components/Header/Header";
 
 const Layout = () => {
   const location = useLocation(); // Get the current location
@@ -10,7 +11,7 @@ const Layout = () => {
   return (
     <>
       <Navbar /> {/* Navbar is outside of AnimatePresence */}
-
+      <Header />
       {/* AnimatePresence handles the transitions between routes */}
       <AnimatePresence mode='wait'>
         {isHomePage ? (

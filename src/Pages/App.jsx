@@ -40,7 +40,7 @@ const App = () => {
   return (
     <>
       {/* Button stays fixed at the bottom */}
-      <div className='fixed bottom-[75px] left-0 right-0 z-10 flex justify-center'>
+      <div className='fixed bottom-[70px] left-0 right-0 z-10 flex justify-center'>
         <BookingButton classes={`w-[90%] max-w-[380px] transition-all duration-300 ease-in-out ${isButtonDisabled ? 'opacity-0':'opacity-100'}`} disabled={isButtonDisabled} />
       </div>
 

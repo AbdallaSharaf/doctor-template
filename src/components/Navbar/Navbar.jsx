@@ -8,7 +8,7 @@ export default function Navbar() {
     const location = useLocation(); // Get the current location
     const [navigation, setNavigation] = useState([
         { name: 'الرئيسية', to: '/', current: false, icon: faHome },
-        { name: 'حجز موعد', to: '/book', current: false, icon: faCalendarPlus },
+        { name: 'عن المركز', to: '/#about', current: false },
         { name: 'خدمات المركز', to: '/services', current: false, isOpen: false, dropdown: [
             { name: 'زراعة الاسنان', to: '/services/زراعة الاسنان' },
             { name: 'عمليات ضرس العقل', to: '/services/عمليات ضرس العقل' },
@@ -17,9 +17,8 @@ export default function Navbar() {
             { name: 'تنظيف الأسنان', to: '/services/تنظيف الأسنان' },
         ] },
         { name: 'تجارب عملائنا', to: '/gallery', current: false },
-        { name: 'عن المركز', to: '/#about', current: false },
-        { name: 'العنوان', to: '/#map', current: false, icon: faMapLocationDot },
-        { name: 'تواصل معانا', to: '/#contact', current: false },
+        { name: 'العنوان', to: '/map', current: false, icon: faMapLocationDot },
+        { name: 'حجز موعد', to: '/book', current: false, icon: faCalendarPlus },
     ]);
 
     // Handle navigation link click

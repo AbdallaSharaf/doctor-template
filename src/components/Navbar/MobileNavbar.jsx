@@ -56,11 +56,11 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
                 />
 
                 <div
-                    className={`fixed bottom-0 overflow-hidden right-0 w-1/2 pb-2 h-full bg-white z-30 transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}
+                    className={`fixed bottom-0 overflow-hidden right-0 w-fit pb-2 h-full bg-white z-30 transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}
                 >
-                    <div className="flex flex-col py-8 gap-6 items-center h-full relative">
+                    <div className="flex flex-col pt-16 gap-6 items-center h-full relative">
                         {navigation.map((item, index) => (
-                            <div key={`menu-item-${index}`} className={`px-3 text-sm md:text-lg text-end transition-all duration-300 ease-in-out w-full`}>
+                            <div key={`menu-item-${index}`} className={`px-3 text-xl md:text-lg text-end transition-all duration-300 ease-in-out w-full`}>
                                 <Link
                                     to={item.to}
                                     onClick={(e) => {
@@ -78,14 +78,14 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
                                     <FontAwesomeIcon
                                         icon={faChevronDown}
                                         aria-hidden="true"
-                                        className={`text-sm transition-all duration-100 ease-in-out ${item.dropdown ? 'block' : 'hidden'} ${openDropdown === item.name ? 'rotate-180 text-primary ' : ''}`}
+                                        className={`text-xl transition-all duration-100 ease-in-out ${item.dropdown ? 'block' : 'hidden'} ${openDropdown === item.name ? 'rotate-180 text-primary ' : ''}`}
                                     />
                                     <p className='pl-4'>{item.name}</p>
                                 </Link>
                                 
                                 {item.dropdown && (
                                 <div
-                                    className={`flex flex-col w-full gap-2 bg-opacity-55  bg-gray-100 ${openDropdown === item.name ? 'h-fit opacity-100 -mb-2 md:mb-0 md:my-2' : 'h-0 opacity-0 overflow-hidden'}`}
+                                    className={`flex flex-col w-full gap-3 bg-opacity-55  bg-gray-100 ${openDropdown === item.name ? 'h-fit opacity-100 -mb-2 md:mb-0 md:my-2' : 'h-0 opacity-0 overflow-hidden'}`}
                                 >
                                     {item.dropdown.map((subItem) => (
                                         <Link
@@ -104,7 +104,7 @@ export default function MobileNavbar({ navigation, handleLinkClick }) {
                             )}
                             </div>
                         ))}
-                        <div className='flex justify-around px-4 gap-5 absolute bottom-6'>
+                        <div className='flex justify-around px-4 gap-5 absolute bottom-3'>
                             <a href='https://web.facebook.com/ahmedalshriefdentalclinics' target="_blank" rel="noopener noreferrer">
                                 <FontAwesomeIcon icon={faFacebook} className='text-secondary md:text-xl' />
                             </a>

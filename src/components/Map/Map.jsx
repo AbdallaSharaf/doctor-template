@@ -11,7 +11,7 @@ const MapComponent = () => {
       <MapContainer 
         center={position} 
         zoom={17} 
-        // scrollWheelZoom={true} 
+        scrollWheelZoom={false} 
         attributionControl={false} // Disable attribution
         style={{ height: "100%", width: "100%", zIndex: 0 }}
       >
