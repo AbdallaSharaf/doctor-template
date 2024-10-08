@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { faTooth } from '@fortawesome/free-solid-svg-icons';
 import BookingButton from '../components/BookingButton/BookingButton';
-import image from '../assets/images/services-dummy.avif'
+import image from '../assets/Images/services-dummy.avif'
 
 const servicesDetails = {
     'زراعة الاسنان': {

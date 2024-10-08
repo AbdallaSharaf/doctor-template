@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import ReactBeforeSliderComponent from 'react-before-after-slider-component';
 import 'react-before-after-slider-component/dist/build.css';
-import iconImage from '../../assets/images/chevronIcon.png'; // Import the image
+import iconImage from '../../assets/Images/chevronIcon.png'; // Import the image
 
-const allImages = import.meta.glob('../../assets/images/gallery/*.{jpg,png}', { eager: true });
+const allImages = import.meta.glob('../../assets/Images/gallery/*.{jpg,png}', { eager: true });
 
 const delimiterIconStyles = {
   width: '30px',
