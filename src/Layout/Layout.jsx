@@ -10,7 +10,7 @@ const Layout = () => {
 
   return (
     <>
-      <Navbar /> {/* Navbar is outside of AnimatePresence */}
+      <Navbar />
       <Header />
       {/* AnimatePresence handles the transitions between routes */}
       <AnimatePresence mode='wait'>
