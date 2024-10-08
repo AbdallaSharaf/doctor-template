@@ -43,7 +43,7 @@ const Contact = () => {
   };
 
   const sendWhatsApp = () => {
-    window.open('https://wa.me/201101161961', '_blank');
+    window.open('https://wa.me/201101161961', '_blank')
   };
 
   return (
