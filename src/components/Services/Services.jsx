@@ -42,16 +42,15 @@ const Services = () => {
   return (
     <>
       <div className='flex mx-auto items-center justify-between mt-16 w-[90%]'>
-          <Link to='/services' className='text-primary text-xs font-thin'>عرض الكل</Link>
+          <Link to='/services' className='text-primary-link text-xs font-thin'>عرض الكل</Link>
           <h1 className='text-2xl font-bold'>خدماتنا</h1>
       </div>
-      <div className='w-full mt-5 overflow-hidden'>
-        <Slider {...settings} className="w-[125%] mx-auto translate-x-[-22%]">
+      <div className='w-full mt-5 overflow-x-auto flex direction-rtl'>
           {servicesArray.map((item, id) => {
               return (
-                  <div key={id} className="text-end px-4 cursor-pointer outline-none">
+                  <div key={id} className="text-right text-primary-text px-4 cursor-pointer outline-none">
                       <Link to={`/services/${item.name}`}>
-                          <div className='mobileM:min-w-[150px] bg-white rounded-md shadow-md  flex flex-col items-end pt-5 px-4 h-[150px]'>
+                          <div className='mobileM:min-w-[150px] bg-primart-bg rounded-md shadow-md  flex flex-col items-start pt-5 px-4 h-[150px]'>
                               {/* Apply dynamic color to the FontAwesomeIcon */}
                                 <FontAwesomeIcon className='text-5xl' icon={item.icon} color={item.color} />
                               <h1 className='text-sm font-semibold mobileM:text-nowrap my-2'>{item.name}</h1>
@@ -61,7 +60,6 @@ const Services = () => {
                   </div>
               );
           })}
-        </Slider>
       </div>
     </>
   );

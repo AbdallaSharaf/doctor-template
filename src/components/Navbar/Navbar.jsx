@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import DesktopNavbar from './DesktopNavbar';
 import MobileNavbar from './MobileNavbar';
 import { faHome, faCalendarPlus, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from 'react-router-dom'; // Import useLocation

@@ -111,9 +111,9 @@ const BookingPage = () => {
                 {dates.map((date, index) => (
                     <div
                         key={index}
-                        className={`border rounded-lg py-4 transition-all duration-300 ease-in-out px-4 cursor-pointer text-center flex flex-col items-center justify-center ${
+                        className={` rounded-lg py-4 text-black transition-all duration-300 ease-in-out px-4 cursor-pointer text-center flex flex-col items-center justify-center ${
                             selectedDate.toDateString() === date.toDateString()
-                                ? 'bg-primary text-white'
+                                ? 'bg-primary '
                                 : 'bg-gray-200'
                         }`}
                         onClick={() => setSelectedDate(date)}
@@ -133,8 +133,8 @@ const BookingPage = () => {
                         availableTimes.map((time, index) => (
                             <div
                                 key={index}
-                                className={`p-3 flex items-center justify-around  border text-sm rounded-lg text-center cursor-pointer transition-all duration-300 ease-in-out ${
-                                    selectedTime === time ? 'bg-primary text-white' : 'bg-gray-200'
+                                className={`p-3 flex items-center justify-around text-black border text-sm rounded-lg text-center cursor-pointer transition-all duration-300 ease-in-out ${
+                                    selectedTime === time ? 'bg-primary ' : 'bg-gray-200'
                                 }`}
                                 onClick={() => setSelectedTime(time)}
                             >
@@ -153,7 +153,7 @@ const BookingPage = () => {
                         type="text"
                         id="name"
                         name="name"
-                        className="border rounded px-2 py-3 w-full text-right"
+                        className="border rounded px-2 py-3 w-full text-right text-primary-text bg-primary-bg"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.name}
@@ -169,7 +169,7 @@ const BookingPage = () => {
                         type="text"
                         id="phone"
                         name="phone"
-                        className="border rounded px-2 py-3 w-full text-right"
+                        className="border rounded px-2 py-3 w-full text-right text-primary-text bg-primary-bg"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.phone}
@@ -185,7 +185,7 @@ const BookingPage = () => {
                         type="number"
                         id="age"
                         name="age"
-                        className="border rounded px-2 py-3 w-full text-right"
+                        className="border rounded px-2 py-3 w-full text-right text-primary-text bg-primary-bg"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.age}
@@ -200,8 +200,8 @@ const BookingPage = () => {
                     <div className="flex space-x-4 justify-between">
                         <button
                             type="button"
-                            className={`w-full px-2 py-3 rounded border ${
-                                formik.values.gender === 'male' ? 'bg-primary text-white' : 'bg-gray-200'
+                            className={`w-full px-2 py-3 rounded border transition-all duration-100 ease-in-out ${
+                                formik.values.gender === 'male' ? 'bg-primary text-white' : 'bg-gray-200 text-black'
                             }`}
                             onClick={() => formik.setFieldValue('gender', 'male')}
                         >
@@ -209,8 +209,8 @@ const BookingPage = () => {
                         </button>
                         <button
                             type="button"
-                            className={`w-full px-2 py-3 rounded border ${
-                                formik.values.gender === 'female' ? 'bg-primary text-white' : 'bg-gray-200'
+                            className={`w-full px-2 py-3 transition-all duration-100 ease-in-out rounded border ${
+                                formik.values.gender === 'female' ? 'bg-primary text-white' : 'bg-gray-200 text-black'
                             }`}
                             onClick={() => formik.setFieldValue('gender', 'female')}
                         >
@@ -226,7 +226,7 @@ const BookingPage = () => {
                     <textarea
                         id="problem"
                         name="problem"
-                        className="border rounded px-2 py-3 w-full text-right"
+                        className="border  rounded px-2 py-3 w-full text-right text-primary-text bg-primary-bg"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.problem}

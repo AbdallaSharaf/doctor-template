@@ -60,7 +60,7 @@ const Contact = () => {
             </div>
             <FontAwesomeIcon
               icon={faLocationDot}
-              className='text-primary size-8'
+              className='text-primary-text size-8'
             />
           </div>
           <div 
@@ -73,7 +73,7 @@ const Contact = () => {
             </div>
             <FontAwesomeIcon
               icon={faWhatsappSquare}
-              className='text-primary size-9'
+              className='text-primary-text size-9'
             />
           </div>
           <div className='flex items-center group py-3 justify-end gap-4'>
@@ -83,14 +83,14 @@ const Contact = () => {
             </div>
             <FontAwesomeIcon
               icon={faEnvelope}
-              className='text-primary size-8'
+              className='text-primary-text size-8'
             />
           </div>
           <h1 className='text-2xl font-bold mt-10'>ابعتلنا رسالة</h1>   
           <form onSubmit={formik.handleSubmit} className='mt-6'>
               <div className='mb-4 w-full'>
                 <input
-                  className='mb-1 px-5 py-3 w-full border-[1px] text-end text-black border-gray-200 focus:border-gray-400 focus:outline-none'
+                  className='mb-1 px-5 py-3 w-full border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
                   {...formik.getFieldProps('name')}
                   type="text"
                   placeholder="الاسم"
@@ -101,7 +101,7 @@ const Contact = () => {
               </div>
               <div className='mb-4 w-full'>
                 <input
-                  className='mb-1 px-5 py-3 text-black w-full border-[1px] text-end border-gray-200 focus:border-gray-400 focus:outline-none'
+                  // className='mb-1 px-5 py-3 w-full border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
                   {...formik.getFieldProps('phone')}
                   type="text"
                   placeholder="رقم الهاتف"
@@ -112,7 +112,7 @@ const Contact = () => {
               </div>
             <div className='mb-4 w-full'>
               <input
-                className='mb-1 px-5 py-3 w-full border-[1px] text-end text-black border-gray-200 focus:border-gray-400 focus:outline-none'
+                // className='mb-1 px-5 py-3 w-full border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
                 {...formik.getFieldProps('subject')}
                 type="text"
                 placeholder="عنوان رسالتك"
@@ -123,7 +123,7 @@ const Contact = () => {
             </div>
             <div className='w-full'>
               <textarea
-                className='w-full h-[110px] px-5 py-3 text-black border-[1px] text-end border-gray-200 focus:border-gray-400 focus:outline-none'
+                // className='w-full h-[110px] px-5 py-3 border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
                 {...formik.getFieldProps('message')}
                 placeholder="رسالتك"
               />

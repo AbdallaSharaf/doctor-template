@@ -39,7 +39,7 @@ const LocationPage = () => {
                             <FontAwesomeIcon icon={faInstagram} className="text-pink-500 text-3xl" />
                         </a>
                         <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
-                            <FontAwesomeIcon icon={faTiktok} className="text-black text-3xl" />
+                            <FontAwesomeIcon icon={faTiktok} className="text-primary-text text-3xl" />
                         </a>
                     </div>
                 </div>

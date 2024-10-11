@@ -1,72 +1,40 @@
 import React from 'react';
-import image from '../../assets/hero.png';
-import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
+import TeamCard from './TeamCard/TeamCard';
 
 const teamMembers = [
   {
     name: "د. أحمد عبد الله",
-    college: "كلية طب الأسنان - جامعة القاهرة",
+    college: "كلية طب الأسنان - القاهرة",
     job: "أخصائي جراحة الفم والفكين",
     colorClass: "bg-team-red",
   },
   {
     name: "د. سارة محمد",
-    college: "كلية طب الأسنان - جامعة الإسكندرية",
+    college: "كلية طب الأسنان - الإسكندرية",
     job: "أخصائية تقويم الأسنان",
     colorClass: "bg-team-blue",
   },
   {
     name: "د. خالد يوسف",
-    college: "كلية طب الأسنان - جامعة عين شمس",
+    college: "كلية طب الأسنان - عين شمس",
     job: "أخصائي طب الأسنان التجميلي",
     colorClass: "bg-team-green",
   },
   {
     name: "د. منى علي",
-    college: "كلية طب الأسنان - جامعة المنصورة",
+    college: "كلية طب الأسنان - المنصورة",
     job: "أخصائية علاج جذور الأسنان",
     colorClass: "bg-team-orange",
   },
   {
     name: "د. هاني إبراهيم",
-    college: "كلية طب الأسنان - جامعة الأزهر",
+    college: "كلية طب الأسنان - الأزهر",
     job: "أخصائي زراعة الأسنان",
     colorClass: "bg-team-sky",
   },
 ];
 
 const Team = () => {
-
-    const settings = {
-        arrows: false,
-        speed: 500,
-        infinite: true,
-        swipeToSlide: true,
-        variableWidth: true,
-        responsive: [
-            {
-              breakpoint: 1024,
-              settings: {
-                slidesToShow: 5,
-                
-              }
-            },
-            {
-              breakpoint: 768,
-              settings: {
-                slidesToShow: 3,
-              }
-            },
-            {
-              breakpoint: 580,
-              settings: {
-                slidesToShow: 2,
-              }
-            },
-          ]        
-    };
 
   return (
     <>
@@ -75,26 +43,10 @@ const Team = () => {
         <h1 className='text-2xl font-bold'>فريق العمل</h1>
       </div>
       </div>
-      <div className='w-full overflow-hidden pt-5 '>
-      <Slider {...settings} className='w-[125%] mx-auto mobileM:translate-x-[-17%] mobileL:translate-x-[-6%] '>
+      <div className='mr-auto flex direction-rtl overflow-x-auto pt-10 w-[95%] gap-6'>
         {teamMembers.map((member, index) => (
-          <div
-            key={index}
-            className={`max-w-[200px] min-w-[200px] mx-3 text-center flex flex-col p-4 justify-center  items-center ${member.colorClass} bg-opacity-20 rounded-xl h-80`}
-          >
-            <div className='h-40 bg-white rounded-3xl relative flex justify-center w-full overflow-visible'>
-              <img 
-                src={image} 
-                className='scale-[0.75] absolute -bottom-8' 
-                alt={member.name} 
-              />
-            </div>
-            <h2 className="text-base font-bold mt-8">{member.name}</h2>
-            <p className='text-[10px] font-light mt-2'>{member.job}</p>
-            <p className='text-[10px] font-light mt-2'>{member.college}</p>
-          </div>
+          <TeamCard member={member} key={index}/>
         ))}
-        </Slider>
         </div>
     </>
   );
