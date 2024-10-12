@@ -5,50 +5,11 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
+import axiosInstance from '../helpers/Axios';
+import { manageAvailableTimes } from '../helpers/AvailableTimesManager'; // Updated import
+import LoadingSpinner from '../helpers/LoadingSpinner';
 
-// Define available time slots based on the selected date
-const getAvailableTimes = (date) => {
-    const day = date.getDay(); // Get the current day (0 = Sunday, 6 = Saturday)
 
-    // Disable time selection for Fridays (5) and Saturdays (6)
-    if (day === 5 ) {
-        return []; // No available times
-    }
-
-    return [
-        '09:00 ص',
-        '10:00 ص',
-        '11:00 ص',
-        '01:00 م',
-        '02:00 م',
-        '03:00 م',
-        '04:00 م',
-        '05:00 م',
-        '06:00 م',
-        '07:00 م',
-        '08:00 م',
-    ];
-};
-
-// Generate dates for the next week excluding Fridays
-const getNextWeekDates = () => {
-    const dates = [];
-    const today = new Date();
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() + 2);
-    
-    for (let i = 0; i < 8; i++) {
-        const nextDate = new Date(startDate);
-        nextDate.setDate(startDate.getDate() + i);
-
-        if (nextDate.getDay() !== 5) { // Exclude Fridays
-            dates.push(nextDate);
-        }
-    }
-    return dates;
-};
-
-// Form validation schema
 const validationSchema = Yup.object({
     name: Yup.string()
         .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, 'الاسم يجب أن يحتوي على حروف عربية أو إنجليزية فقط')
@@ -68,19 +29,50 @@ const validationSchema = Yup.object({
 });
 
 const BookingPage = () => {
-    const [availableTimes, setAvailableTimes] = useState([]);
+    const [availableDates, setAvailableDates] = useState([]); // State for available dates
+    const [availableTimes, setAvailableTimes] = useState([]); // State for available times
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState('');
+    const [loading, setLoading] = useState(true); // Loading state
     const [submitted, setSubmitted] = useState(false);
     const navigate = useNavigate();
-    const dates = getNextWeekDates(); // Get next week dates
 
+    // Fetch available dates and times from Firebase
     useEffect(() => {
-        const times = getAvailableTimes(selectedDate);
-        setAvailableTimes(times);
-        setSelectedTime(''); // Reset selected time when date changes
-    }, [selectedDate]);
-
+        const fetchAvailableData = async () => {
+            try {
+                const response = await axiosInstance.get('/available_times.json');
+                const data = response.data;
+    
+                const datesArray = [];
+                const timesArray = [];
+    
+                for (const date in data) {
+                    datesArray.push(new Date(date)); // Convert string to Date object
+                    timesArray.push(data[date]); // Assuming data[date] is the available times
+                }
+                setAvailableDates(datesArray);
+                setAvailableTimes(timesArray);
+    
+                // Set selectedDate and selectedTime after setting available times
+                if (datesArray.length > 0) {
+                    setSelectedDate(datesArray[0]);
+                    if (timesArray[0].length > 0) {
+                        setSelectedTime(timesArray[0][0].time); // Select the first available time
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching available times:', error);
+            }
+            finally {
+                setLoading(false); // Set loading to false when fetching is done
+            }
+        };
+        manageAvailableTimes();
+        fetchAvailableData();
+    }, []);
+    
+    
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -90,38 +82,70 @@ const BookingPage = () => {
             problem: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            Swal.fire({
-                title: 'تم الحجز بنجاح!',
-                html: `<pre>اسم: ${values.name}<br>رقم الهاتف: ${values.phone}<br>العمر: ${values.age}<br>الجنس: ${values.gender === 'male' ? 'ذكر' : 'أنثى'}<br>المشكلة: ${values.problem}<br>التاريخ: ${selectedDate.toLocaleDateString()}<br>الوقت: ${selectedTime}</pre>`,
-                icon: 'success',
-                confirmButtonText: 'موافق',
-            }).then(() => {
-                navigate('/'); // Redirect to homepage after confirmation
-            });
-            setSubmitted(true);
+        onSubmit: async (values) => {
+            const bookingData = {
+                name: values.name,
+                phone: values.phone,
+                age: values.age,
+                gender: values.gender,
+                problem: values.problem,
+                date: selectedDate.toISOString().split('T')[0], // Save date in YYYY-MM-DD format
+                time: selectedTime,
+            };
+    
+            try {
+                // Push booking data to Firebase
+                await axiosInstance.post('/bookings.json', bookingData); // Adjust your Firebase endpoint if necessary
+    
+                Swal.fire({
+                    title: 'تم الحجز بنجاح!',
+                    html: `<pre>اسم: ${values.name}<br>رقم الهاتف: ${values.phone}<br>العمر: ${values.age}<br>الجنس: ${values.gender === 'male' ? 'ذكر' : 'أنثى'}<br>المشكلة: ${values.problem}<br>التاريخ: ${selectedDate.toLocaleDateString()}<br>الوقت: ${selectedTime}</pre>`,
+                    icon: 'success',
+                    confirmButtonText: 'موافق',
+                }).then(() => {
+                    navigate('/'); // Redirect to homepage after confirmation
+                });
+    
+                setSubmitted(true);
+            } catch (error) {
+                console.error('Error saving booking:', error);
+                Swal.fire({
+                    title: 'خطأ!',
+                    text: 'حدث خطأ أثناء حفظ الحجز، حاول مرة أخرى لاحقاً.',
+                    icon: 'error',
+                    confirmButtonText: 'موافق',
+                });
+            }
         },
     });
+    
+
+    if (loading) {
+        return <div className='flex justify-center items-center w-full h-screen'><LoadingSpinner /></div>;
+    }
 
     return (
-        <div className="max-w-lg mx-auto mt-10 p-5  text-right rounded-lg shadow-md">
+        <div className="max-w-lg mx-auto mt-10 p-5 text-right rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-8">احجز معادك</h2>
+            
+            <div className="overflow-x-auto flex gap-4 pb-3 direction-rtl">
+            {availableDates.map((date, index) => (
+                <div
+                    key={index}
+                    className={`rounded-lg py-4 text-black transition-all duration-300 ease-in-out px-4 cursor-pointer text-center flex flex-col items-center justify-center ${
+                        selectedDate.toDateString() === date.toDateString() ? 'bg-primary' : 'bg-gray-200'
+                    }`}
+                    onClick={() => {
+                        setSelectedDate(date);
+                        const selectedIndex = index; // Get the index of the selected date
+                            setSelectedTime(availableTimes[selectedIndex][0].time); // Set first available time
+                    }}
+                >
+                    <h1 className='w-[60px] font-semibold text-xl'>{date.getDate()}</h1>
+                    <p className='text-sm mt-2 text-black text-opacity-75'>{date.toLocaleDateString('ar-EG', { weekday: 'long' })}</p>
+                </div>
+            ))}
 
-            <div className="overflow-x-auto  flex gap-4 pb-3 direction-rtl">
-                {dates.map((date, index) => (
-                    <div
-                        key={index}
-                        className={` rounded-lg py-4 text-black transition-all duration-300 ease-in-out px-4 cursor-pointer text-center flex flex-col items-center justify-center ${
-                            selectedDate.toDateString() === date.toDateString()
-                                ? 'bg-primary '
-                                : 'bg-gray-200'
-                        }`}
-                        onClick={() => setSelectedDate(date)}
-                    >   
-                        <h1 className='w-[60px] font-semibold text-xl'>{date.getDate()}</h1>
-                        <p className='text-sm mt-2 text-black text-opacity-75'>{date.toLocaleDateString('ar-EG', { weekday: 'long'})}</p>
-                    </div>
-                ))}
             </div>
 
             <div className="mt-12">
@@ -130,22 +154,21 @@ const BookingPage = () => {
                     {availableTimes.length === 0 ? (
                         <div className="col-span-2 text-red-600">لا توجد أوقات متاحة لهذا اليوم</div>
                     ) : (
-                        availableTimes.map((time, index) => (
+                        availableTimes.map((timeObj, index) => (
                             <div
                                 key={index}
                                 className={`p-3 flex items-center justify-around text-black border text-sm rounded-lg text-center cursor-pointer transition-all duration-300 ease-in-out ${
-                                    selectedTime === time ? 'bg-primary ' : 'bg-gray-200'
+                                    selectedTime === timeObj[index].time ? 'bg-primary ' : 'bg-gray-200'
                                 }`}
-                                onClick={() => setSelectedTime(time)}
+                                onClick={() => setSelectedTime(timeObj[index].time)}
                             >
                                 <FontAwesomeIcon className='font-semibold' icon={faClock} />
-                                <div className='font-light w-3/4'>{time}</div>
+                                <div className='font-light w-3/4'>{timeObj[index].time}</div>
                             </div>
                         ))
                     )}
                 </div>
             </div>
-
             <form onSubmit={formik.handleSubmit} className="mt-12 mb-16">
                 <h1 className='text-xl font-semibold mb-8'>سجل بياناتك</h1>
                 <div>
@@ -236,6 +259,7 @@ const BookingPage = () => {
                         <div className="text-red-600">{formik.errors.problem}</div>
                     ) : null}
                 </div>
+                {/* Form fields */}
                 <div className='w-full flex justify-center'>
                 <button
                     type="submit"

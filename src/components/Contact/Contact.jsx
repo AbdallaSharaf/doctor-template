@@ -5,38 +5,62 @@ import * as Yup from 'yup';
 import { faLocationDot, faEnvelope, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons';
 import Swal from 'sweetalert2';
+import axiosInstance from '../../helpers/Axios'; // Ensure Axios instance is imported
 
 const Contact = () => {
-    const formik = useFormik({
-        initialValues: {
-          name: '',
-          phone: '',
-          subject: '',
-          message: '',
-        },
-        validationSchema: Yup.object({
-          name: Yup.string()
-            .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, 'الاسم يجب أن يحتوي على حروف عربية أو إنجليزية فقط')
-            .min(3, 'الاسم يجب أن يكون على الأقل ٣ أحرف')
-            .required('الاسم مطلوب'),
-          phone: Yup.string()
-            .matches(/^\+?[0-9]{10,15}$/, 'رقم الهاتف غير صحيح')
-            .required('رقم الهاتف مطلوب'),
-          subject: Yup.string()
-            .required('العنوان مطلوب'),
-          message: Yup.string()
-            .required('الرسالة مطلوبة'),
-        }),
-        onSubmit: (values) => {
-          console.log(values);
+
+  const formik = useFormik({
+      initialValues: {
+        name: '',
+        phone: '',
+        subject: '',
+        message: '',
+      },
+      validationSchema: Yup.object({
+        name: Yup.string()
+          .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, 'الاسم يجب أن يحتوي على حروف عربية أو إنجليزية فقط')
+          .min(3, 'الاسم يجب أن يكون على الأقل ٣ أحرف')
+          .required('الاسم مطلوب'),
+        phone: Yup.string()
+          .matches(/^\+?[0-9]{10,15}$/, 'رقم الهاتف غير صحيح')
+          .required('رقم الهاتف مطلوب'),
+        subject: Yup.string()
+          .required('العنوان مطلوب'),
+        message: Yup.string()
+          .required('الرسالة مطلوبة'),
+      }),
+      onSubmit: async (values) => {
+        const contactData = {
+          name: values.name,
+          phone: values.phone,
+          subject: values.subject,
+          message: values.message,
+          timestamp: new Date().toISOString(), // Optional: Add timestamp
+        };
+  
+        try {
+          // Push contact form data to Firebase
+          await axiosInstance.post('/messages.json', contactData); // Adjust your Firebase endpoint if necessary
+  
           Swal.fire({
-            title: "عمل جيد!",
-            text: "تم إرسال الرسالة بنجاح!",
+            title: "عمل جيد",
+            text: "تم إرسال الرسالة بنجاح",
             icon: "success"
           });
-        },
-      });
-
+  
+          // Optionally, reset the form after successful submission
+          formik.resetForm();
+        } catch (error) {
+          console.error('Error submitting contact form:', error);
+          Swal.fire({
+            title: "خطأ!",
+            text: "حدث خطأ أثناء إرسال الرسالة، حاول مرة أخرى لاحقاً.",
+            icon: "error",
+          });
+        }
+      },
+  });
+  
   // Google Maps and WhatsApp links
   const openGoogleMaps = () => {
     window.open('https://goo.gl/maps/your-location', '_blank');
@@ -101,7 +125,7 @@ const Contact = () => {
               </div>
               <div className='mb-4 w-full'>
                 <input
-                  // className='mb-1 px-5 py-3 w-full border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
+                  className='mb-1 px-5 py-3 w-full border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
                   {...formik.getFieldProps('phone')}
                   type="text"
                   placeholder="رقم الهاتف"
@@ -112,7 +136,7 @@ const Contact = () => {
               </div>
             <div className='mb-4 w-full'>
               <input
-                // className='mb-1 px-5 py-3 w-full border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
+                className='mb-1 px-5 py-3 w-full border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
                 {...formik.getFieldProps('subject')}
                 type="text"
                 placeholder="عنوان رسالتك"
@@ -123,7 +147,7 @@ const Contact = () => {
             </div>
             <div className='w-full'>
               <textarea
-                // className='w-full h-[110px] px-5 py-3 border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
+                className='w-full h-[110px] px-5 py-3 border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
                 {...formik.getFieldProps('message')}
                 placeholder="رسالتك"
               />

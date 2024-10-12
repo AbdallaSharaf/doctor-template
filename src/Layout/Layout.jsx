@@ -6,7 +6,7 @@ import Header from "../components/Header/Header";
 
 const Layout = () => {
   const location = useLocation(); // Get the current location
-  const isHomePage = location.pathname === '/'; // Check if the current page is the homepage
+  const isMapPage = location.pathname === '/map'; // Check if the current page is the homepage
 
   return (
     <>
@@ -14,7 +14,7 @@ const Layout = () => {
       <Header />
       {/* AnimatePresence handles the transitions between routes */}
       <AnimatePresence mode='wait'>
-        {isHomePage ? (
+        {!isMapPage ? (
           // Render Outlet without animation for the homepage
           <Outlet />
         ) : (

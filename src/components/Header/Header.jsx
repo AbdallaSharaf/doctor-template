@@ -27,7 +27,7 @@ const Header = () => {
       <div className="flex items-center">
         <div 
           className={`w-16 h-8 flex items-center bg-gray-300 dark:bg-gray-600 rounded-full p-1 cursor-pointer relative`} 
-          data-isOn={isDarkMode}
+          data-ison={isDarkMode}
           onClick={toggleSwitch}
         >
           {/* Sun Icon (for light mode) */}
