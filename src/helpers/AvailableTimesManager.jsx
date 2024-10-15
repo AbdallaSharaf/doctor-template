@@ -14,17 +14,17 @@ export const getAvailableDatesWithTimes = () => {
         if (nextDate.getDay() !== 5) { // Exclude Fridays
             // Generate available times for this date
             const times = [
-                '09:00 ص',
-                '10:00 ص',
-                '11:00 ص',
-                '01:00 م',
-                '02:00 م',
-                '03:00 م',
-                '04:00 م',
-                '05:00 م',
-                '06:00 م',
-                '07:00 م',
-                '08:00 م',
+                '09:00 AM',
+                '10:00 AM',
+                '11:00 AM',
+                '01:00 PM',
+                '02:00 PM',
+                '03:00 PM',
+                '04:00 PM',
+                '05:00 PM',
+                '06:00 PM',
+                '07:00 PM',
+                '08:00 PM',
             ].map((time) => ({ time, available: true }));
 
             // Push the date and its available times to the array

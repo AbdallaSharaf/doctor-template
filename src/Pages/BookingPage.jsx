@@ -91,6 +91,7 @@ const BookingPage = () => {
                 problem: values.problem,
                 date: selectedDate.toISOString().split('T')[0], // Save date in YYYY-MM-DD format
                 time: selectedTime,
+                status: 'pending',
             };
     
             try {
@@ -111,7 +112,7 @@ const BookingPage = () => {
                 console.error('Error saving booking:', error);
                 Swal.fire({
                     title: 'خطأ!',
-                    text: 'حدث خطأ أثناء حفظ الحجز، حاول مرة أخرى لاحقاً.',
+                    text: 'حدث خطأ أثناء حفظ الحجز، حاول مرة أخرى لاحقاً',
                     icon: 'error',
                     confirmButtonText: 'موافق',
                 });
@@ -119,36 +120,44 @@ const BookingPage = () => {
         },
     });
     
+    const formatTime = (time) => {
+        // Remove Arabic period markers and trim whitespace
+        let cleanTime = time.replace('PM', 'م').replace('AM', 'ص').trim();
+    
+        // Return the cleaned time
+        return cleanTime;
+    };    
 
     if (loading) {
         return <div className='flex justify-center items-center w-full h-screen'><LoadingSpinner /></div>;
     }
 
     return (
-        <div className="max-w-lg mx-auto mt-10 p-5 text-right rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-8">احجز معادك</h2>
+        <div className="max-w-lg mx-auto mt-10 py-10 text-right rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-8 px-5">احجز معادك</h2>
             
-            <div className="overflow-x-auto flex gap-4 pb-3 direction-rtl">
+            <div className="overflow-x-auto flex  pb-3 direction-rtl">
             {availableDates.map((date, index) => (
                 <div
                     key={index}
-                    className={`rounded-lg py-4 text-black transition-all duration-300 ease-in-out px-4 cursor-pointer text-center flex flex-col items-center justify-center ${
+                    className={`rounded-lg py-4 mr-5 text-black transition-all duration-300 ease-in-out px-4 cursor-pointer text-center flex flex-col items-center justify-center ${
                         selectedDate.toDateString() === date.toDateString() ? 'bg-primary' : 'bg-gray-200'
-                    }`}
+                    } ${index === availableDates.length - 1 ? 'ml-5' : ''}`} // Apply ml-5 to the last element
                     onClick={() => {
                         setSelectedDate(date);
                         const selectedIndex = index; // Get the index of the selected date
-                            setSelectedTime(availableTimes[selectedIndex][0].time); // Set first available time
+                        setSelectedTime(availableTimes[selectedIndex][0].time); // Set first available time
                     }}
                 >
-                    <h1 className='w-[60px] font-semibold text-xl'>{date.getDate()}</h1>
-                    <p className='text-sm mt-2 text-black text-opacity-75'>{date.toLocaleDateString('ar-EG', { weekday: 'long' })}</p>
+                    <h1 className="w-[60px] font-semibold text-xl">{date.getDate()}</h1>
+                    <p className="text-sm mt-2 text-black text-opacity-75">{date.toLocaleDateString('ar-EG', { weekday: 'long' })}</p>
                 </div>
             ))}
 
+
             </div>
 
-            <div className="mt-12">
+            <div className="mt-12 px-5">
                 <h1 className='text-xl font-semibold mb-8'>المواعيد المتاحة</h1>
                 <div className="grid grid-cols-3 gap-3 mt-2 direction-rtl">
                     {availableTimes.length === 0 ? (
@@ -163,13 +172,13 @@ const BookingPage = () => {
                                 onClick={() => setSelectedTime(timeObj[index].time)}
                             >
                                 <FontAwesomeIcon className='font-semibold' icon={faClock} />
-                                <div className='font-light w-3/4'>{timeObj[index].time}</div>
+                                <div className='font-light w-3/4'>{formatTime(timeObj[index].time)}</div>
                             </div>
                         ))
                     )}
                 </div>
             </div>
-            <form onSubmit={formik.handleSubmit} className="mt-12 mb-16">
+            <form onSubmit={formik.handleSubmit} className="mt-12 mb-16 px-5">
                 <h1 className='text-xl font-semibold mb-8'>سجل بياناتك</h1>
                 <div>
                     <input

@@ -35,7 +35,7 @@ const Contact = () => {
           phone: values.phone,
           subject: values.subject,
           message: values.message,
-          timestamp: new Date().toISOString(), // Optional: Add timestamp
+          timestamp: new Date().toISOString(),  
         };
   
         try {
