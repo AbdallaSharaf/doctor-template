@@ -14,14 +14,18 @@ const Team = () => {
         const data = response.data;
 
         const teamArray = data ? Object.values(data) : [];
-        setTeamMembers(teamArray);
+        
+        // Sort team members by order property
+        const sortedTeamMembers = teamArray.sort((a, b) => a.order - b.order);
+        
+        setTeamMembers(sortedTeamMembers);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchTeamMembers();
   }, []);
 
@@ -37,7 +41,7 @@ const Team = () => {
       ) : (
         <div className='mr-auto flex direction-rtl overflow-x-auto pt-10 w-[95%] gap-6'>
           {teamMembers.map((member, index) => (
-            <TeamCard member={member} key={index}/>
+            <TeamCard member={member} key={index} />
           ))}
         </div>
       )}
