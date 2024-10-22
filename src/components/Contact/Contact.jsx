@@ -6,30 +6,46 @@ import { faLocationDot, faEnvelope, faPaperPlane } from '@fortawesome/free-solid
 import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons';
 import Swal from 'sweetalert2';
 import axiosInstance from '../../helpers/Axios'; // Ensure Axios instance is imported
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
-const Contact = () => {
-
+const ContactForm = () => {
+  const { executeRecaptcha } = useGoogleReCaptcha(); // use this to trigger reCAPTCHA
+  
   const formik = useFormik({
-      initialValues: {
-        name: '',
-        phone: '',
-        subject: '',
-        message: '',
-      },
-      validationSchema: Yup.object({
-        name: Yup.string()
-          .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, 'الاسم يجب أن يحتوي على حروف عربية أو إنجليزية فقط')
-          .min(3, 'الاسم يجب أن يكون على الأقل ٣ أحرف')
-          .required('الاسم مطلوب'),
-        phone: Yup.string()
-          .matches(/^\+?[0-9]{10,15}$/, 'رقم الهاتف غير صحيح')
-          .required('رقم الهاتف مطلوب'),
-        subject: Yup.string()
-          .required('العنوان مطلوب'),
-        message: Yup.string()
-          .required('الرسالة مطلوبة'),
-      }),
-      onSubmit: async (values) => {
+    initialValues: {
+      name: '',
+      phone: '',
+      subject: '',
+      message: '',
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, 'الاسم يجب أن يحتوي على حروف عربية أو إنجليزية فقط')
+        .min(3, 'الاسم يجب أن يكون على الأقل ٣ أحرف')
+        .required('الاسم مطلوب'),
+      phone: Yup.string()
+        .matches(/^\+?[0-9]{10,15}$/, 'رقم الهاتف غير صحيح')
+        .required('رقم الهاتف مطلوب'),
+      subject: Yup.string()
+        .required('العنوان مطلوب'),
+      message: Yup.string()
+        .required('الرسالة مطلوبة'),
+    }),
+    onSubmit: async (values) => {
+      if (!executeRecaptcha) {
+        console.error('reCAPTCHA not loaded');
+        return;
+      }
+    
+      try {
+        // Trigger reCAPTCHA and get the token
+        const recaptchaToken = await executeRecaptcha('submit_form');
+    
+        if (!recaptchaToken) {
+          console.error('Failed to retrieve reCAPTCHA token');
+          return;
+        }
+    
         const contactData = {
           name: values.name,
           phone: values.phone,
@@ -38,31 +54,30 @@ const Contact = () => {
           timestamp: new Date().toISOString(),
           unread: true,
           isArchived: false,
+          recaptchaToken, // Include the reCAPTCHA token
         };
-  
-        try {
-          // Push contact form data to Firebase
-          await axiosInstance.post('/messages.json', contactData); // Adjust your Firebase endpoint if necessary
-  
-          Swal.fire({
-            title: "عمل جيد",
-            text: "تم إرسال الرسالة بنجاح",
-            icon: "success"
-          });
-  
-          // Optionally, reset the form after successful submission
-          formik.resetForm();
-        } catch (error) {
-          console.error('Error submitting contact form:', error);
-          Swal.fire({
-            title: "خطأ!",
-            text: "حدث خطأ أثناء إرسال الرسالة، حاول مرة أخرى لاحقاً.",
-            icon: "error",
-          });
-        }
-      },
+    
+        // Push contact form data to Firebase
+        await axiosInstance.post('/messages.json', contactData);
+    
+        Swal.fire({
+          title: 'عمل جيد',
+          text: 'تم إرسال الرسالة بنجاح',
+          icon: 'success',
+        });
+    
+        formik.resetForm();
+      } catch (error) {
+        console.error('Error submitting contact form:', error);
+        Swal.fire({
+          title: 'خطأ!',
+          text: 'حدث خطأ أثناء إرسال الرسالة، حاول مرة أخرى لاحقاً.',
+          icon: 'error',
+        });
+      }
+    }
+    
   });
-  
   // Google Maps and WhatsApp links
   const openGoogleMaps = () => {
     window.open('https://goo.gl/maps/your-location', '_blank');
@@ -164,5 +179,11 @@ const Contact = () => {
     </div>
   );
 };
+
+const Contact = () => (
+  <GoogleReCaptchaProvider reCaptchaKey="6LcHumcqAAAAAPkBItqZp4rMXtN322MHmySsyqje">
+    <ContactForm />
+  </GoogleReCaptchaProvider>
+);
 
 export default Contact;

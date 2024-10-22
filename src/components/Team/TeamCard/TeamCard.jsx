@@ -1,12 +1,11 @@
 import React from 'react'
-import image from '../../../assets/hero.png';
 
 const TeamCard = ({member}) => {
   return (
     <div className={`text-center flex flex-col p-4 justify-center  items-center ${member.colorClass} bg-opacity-20 rounded-xl h-80`}>
             <div className='h-40 bg-white rounded-3xl relative flex justify-center w-full overflow-visible'>
                 <img 
-                src={image} 
+                src={member.image} 
                 className='scale-[1] absolute -bottom-0' 
                 alt={member.name} 
                 />

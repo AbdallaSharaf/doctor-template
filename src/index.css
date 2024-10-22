@@ -27,7 +27,8 @@
 }
 
 :root {
-  --color-primary: #407fd5;
+  --color-primary: #1B84FF;
+  --btn-primary: #1B84FF;
   --bg-primary: #fff;
   --text-primary: #03032e;
   --text-link: #407fd5;

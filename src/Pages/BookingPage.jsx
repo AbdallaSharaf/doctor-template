@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import axiosInstance from '../helpers/Axios';
-import { manageAvailableTimes } from '../helpers/AvailableTimesManager'; // Updated import
+import { manageAvailableTimes } from '../helpers/AvailableTimesManager';
 import LoadingSpinner from '../helpers/LoadingSpinner';
-
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3'; // Import reCAPTCHA
 
 const validationSchema = Yup.object({
     name: Yup.string()
@@ -36,7 +36,7 @@ const BookingPage = () => {
     const [loading, setLoading] = useState(true); // Loading state
     const [submitted, setSubmitted] = useState(false);
     const navigate = useNavigate();
-
+    const { executeRecaptcha } = useGoogleReCaptcha(); // Hook for reCAPTCHA
     // Fetch available dates and times from Firebase
     useEffect(() => {
         const fetchAvailableData = async () => {
@@ -83,30 +83,37 @@ const BookingPage = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            const bookingData = {
-                name: values.name,
-                phone: values.phone,
-                age: values.age,
-                gender: values.gender,
-                problem: values.problem,
-                date: selectedDate.toISOString().split('T')[0], // Save date in YYYY-MM-DD format
-                time: selectedTime,
-                status: 'pending',
-            };
-    
+            if (!executeRecaptcha) {
+                Swal.fire('reCAPTCHA not ready', 'Please try again later.', 'error');
+                return;
+            }
+            
             try {
-                // Push booking data to Firebase
-                await axiosInstance.post('/bookings.json', bookingData); // Adjust your Firebase endpoint if necessary
-    
+                const captchaToken = await executeRecaptcha(); // Generate the captcha token
+                
+                const bookingData = {
+                    name: values.name,
+                    phone: values.phone,
+                    age: values.age,
+                    gender: values.gender,
+                    problem: values.problem,
+                    date: selectedDate.toISOString().split('T')[0], 
+                    time: selectedTime,
+                    status: 'pending',
+                    captchaToken, // Include captcha token in booking data
+                };
+        
+                await axiosInstance.post('/bookings.json', bookingData);
+        
                 Swal.fire({
                     title: 'تم الحجز بنجاح!',
                     html: `<pre>اسم: ${values.name}<br>رقم الهاتف: ${values.phone}<br>العمر: ${values.age}<br>الجنس: ${values.gender === 'male' ? 'ذكر' : 'أنثى'}<br>المشكلة: ${values.problem}<br>التاريخ: ${selectedDate.toLocaleDateString()}<br>الوقت: ${selectedTime}</pre>`,
                     icon: 'success',
                     confirmButtonText: 'موافق',
                 }).then(() => {
-                    navigate('/'); // Redirect to homepage after confirmation
+                    navigate('/');
                 });
-    
+        
                 setSubmitted(true);
             } catch (error) {
                 console.error('Error saving booking:', error);
@@ -283,4 +290,10 @@ const BookingPage = () => {
     );
 };
 
-export default BookingPage;
+export default function BookingPageWithCaptcha() {
+    return (
+        <GoogleReCaptchaProvider reCaptchaKey="6LcHumcqAAAAAPkBItqZp4rMXtN322MHmySsyqje">
+            <BookingPage />
+        </GoogleReCaptchaProvider>
+    );
+}
