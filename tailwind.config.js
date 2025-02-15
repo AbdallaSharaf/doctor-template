@@ -11,6 +11,8 @@ export default {
       colors: {
         primary: 'var(--color-primary)',
         'primary-text': 'var(--text-primary)',
+        'secondary-text': 'var(--text-secondary)',
+        'header-text': 'var(--text-header)',
         'primary-link': 'var(--text-link)',
         'primary-bg': 'var(--bg-primary)',
         'secondary': '#0d3c85',

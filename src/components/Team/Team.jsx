@@ -37,11 +37,11 @@ const Team = () => {
         </div>
       </div>
       {loading ? ( // Show spinner while loading
-        <div className='flex justify-center items-center w-full h-96 py-10'><LoadingSpinner /></div>
+        <div className='flex  justify-center items-center w-full h-96 py-10'><LoadingSpinner /></div>
       ) : (
-        <div className='mr-auto flex direction-rtl overflow-x-auto pt-10 w-[95%] gap-6'>
+        <div className='mr-auto scrollbar-hide flex direction-rtl overflow-x-auto pt-10 w-[95%] gap-6'>
           {teamMembers.map((member, index) => (
-            <TeamCard member={member} key={index} />
+            member.isVisible && <TeamCard member={member} key={index} />
           ))}
         </div>
       )}

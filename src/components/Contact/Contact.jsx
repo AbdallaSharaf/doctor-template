@@ -88,13 +88,14 @@ const ContactForm = () => {
   };
 
   return (
-    <div id="contact" className="mt-16 w-[90%] mx-auto text-end">
+    <div id="contact" className="mt-16 w-[90%] mx-auto text-end lg:flex flex-row-reverse gap-10">
+      <div className='lg:w-2/5'>
         <h1 className='text-2xl font-bold'>تواصل معانا</h1>   
         <h1 className='my-4 font-semibold'>احصل على إجابات ونصائح من المستشارين المحترفين</h1>
           <div 
             onClick={openGoogleMaps} 
             className='cursor-pointer flex items-center justify-end group py-3 border-b-[1px] border-gray-500 border-opacity-10 gap-4'
-          >
+            >
             <div>
               <h1 className='font-semibold py-1'>العنوان</h1>
               <p className='text-sm'>شارع البحر مبنى طنطا تاون مول الدور الخامس</p>
@@ -102,7 +103,7 @@ const ContactForm = () => {
             <FontAwesomeIcon
               icon={faLocationDot}
               className='text-primary-text size-8'
-            />
+              />
           </div>
           <div 
             onClick={sendWhatsApp} 
@@ -115,7 +116,7 @@ const ContactForm = () => {
             <FontAwesomeIcon
               icon={faWhatsappSquare}
               className='text-primary-text size-9'
-            />
+              />
           </div>
           <div className='flex items-center group py-3 justify-end gap-4'>
             <div>
@@ -125,9 +126,11 @@ const ContactForm = () => {
             <FontAwesomeIcon
               icon={faEnvelope}
               className='text-primary-text size-8'
-            />
+              />
           </div>
-          <h1 className='text-2xl font-bold mt-10'>ابعتلنا رسالة</h1>   
+          </div>
+          <div className='lg:w-3/5'>
+          <h1 className='text-2xl font-bold lg:mt-0 mt-10'>ابعتلنا رسالة</h1>   
           <form onSubmit={formik.handleSubmit} className='mt-6'>
               <div className='mb-4 w-full'>
                 <input
@@ -135,7 +138,7 @@ const ContactForm = () => {
                   {...formik.getFieldProps('name')}
                   type="text"
                   placeholder="الاسم"
-                />
+                  />
                 {formik.touched.name && formik.errors.name ? (
                   <p className='text-red-800 w-full'>{formik.errors.name}</p>
                 ) : null}
@@ -157,7 +160,7 @@ const ContactForm = () => {
                 {...formik.getFieldProps('subject')}
                 type="text"
                 placeholder="عنوان رسالتك"
-              />
+                />
               {formik.touched.subject && formik.errors.subject ? (
                 <p className='text-red-800 w-full'>{formik.errors.subject}</p>
               ) : null}
@@ -167,15 +170,16 @@ const ContactForm = () => {
                 className='w-full h-[110px] px-5 py-3 border-[1px] text-end border-gray-200 text-primary-text bg-primary-bg focus:border-gray-400 focus:outline-none'
                 {...formik.getFieldProps('message')}
                 placeholder="رسالتك"
-              />
+                />
               {formik.touched.message && formik.errors.message ? (
                 <p className='text-red-800'>{formik.errors.message}</p>
               ) : null}
             </div>
-            <div className='w-auto flex justify-center'>
-              <button className='px-7 py-3 mt-5 bg-primary rounded-sm mx-auto text-white font-bold' type="submit"><FontAwesomeIcon className='mr-2' icon={faPaperPlane}/>ارسال الرسالة</button>
+            <div className='w-auto flex lg:justify-start justify-center'>
+              <button className='px-7 py-3 mt-5 bg-primary rounded-sm lg:mx-0 mx-auto text-white font-bold' type="submit"><FontAwesomeIcon className='mr-2' icon={faPaperPlane}/>ارسال الرسالة</button>
             </div>
           </form>
+    </div>
     </div>
   );
 };

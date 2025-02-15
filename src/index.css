@@ -30,7 +30,9 @@
   --color-primary: #1B84FF;
   --btn-primary: #1B84FF;
   --bg-primary: #fff;
-  --text-primary: #03032e;
+  --text-primary: #424258;
+  --text-header: #66aeff;
+  --text-secondary: #83838d;
   --text-link: #407fd5;
 }
 
@@ -38,5 +40,22 @@
   --color-primary: #1e3a8a;
   --bg-primary: #03032e;
   --text-primary: #fff;
+  --text-header: #225c9e;
+  --text-secondary: #83838d;
   --text-link: #fff;
 }
+
+  /* Hide scrollbar for Webkit-based browsers */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for Firefox */
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  /* Hide scrollbar for Edge/IE */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+  }  
