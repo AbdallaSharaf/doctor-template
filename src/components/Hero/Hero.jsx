@@ -13,29 +13,6 @@ const Hero = () => {
         </div>
         </div>
     </div>
-    <div className='flex justify-around my-3 gap-3 w-[90%] md:w-[80%] lg:w-3/5 xl:w-[50%] mx-auto'>
-      <div className='text-center w-1/3 py-4 shadow-lg '>
-      <div className='flex justify-center font-semibold gap-1 text-primary-text font-serif'>
-        <h3 >عملية</h3>
-        <h3 >1000+</h3>
-        </div>
-        <p className='text-primary-text mt-1 font-light'>زراعة ناجحة</p>
-      </div>
-      <div className='text-center w-1/3 py-4 shadow-lg'>
-      <div className='flex justify-center font-semibold gap-1 text-primary-text font-serif'>
-        <h3 >سنة</h3>
-        <h3 >20+</h3>
-        </div>
-        <p className='text-primary-text mt-1 font-light'>خبرة</p>
-      </div>
-      <div className='text-center w-1/3 py-4 shadow-lg'>
-      <div className='flex justify-center font-semibold gap-1 text-primary-text font-serif'>
-        <h3 >نسبة</h3>
-        <h3 >100%</h3>
-        </div>
-        <p className='text-primary-text mt-1 font-light'>رضا عملائنا</p>
-      </div>
-    </div>
     </>
   )
 }
